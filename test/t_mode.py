@@ -5,6 +5,7 @@ import asyncio
 from typing import AnyStr, Any
 from mode import Worker
 from mode.threads import ServiceThread
+import threading
 
 
 class OneThread(ServiceThread):
@@ -13,6 +14,7 @@ class OneThread(ServiceThread):
         super().__init__(**kwargs)
 
     async def on_start(self) -> None:
+        print(threading.currentThread().getName())
         print('start one server')
 
     async def on_thread_stop(self) -> None:
@@ -26,10 +28,8 @@ class TwoThread(ServiceThread):
         super().__init__(**kwargs)
 
     async def on_start(self) -> None:
+        print(threading.currentThread().getName())
         print('start two server')
-        while True:
-            await asyncio.sleep(1)
-            print('two server')
 
     async def on_thread_stop(self) -> None:
         # on_stop() executes in parent thread, on_thread_stop in the thread.
@@ -42,9 +42,10 @@ class ThreeThread(ServiceThread):
         super().__init__(**kwargs)
 
     async def on_start(self) -> None:
+        print(threading.currentThread().getName())
         print('start three server')
         while True:
-            await asyncio.sleep(1)
+            await self.sleep(1)
             print('three server')
 
     async def on_thread_stop(self) -> None:
