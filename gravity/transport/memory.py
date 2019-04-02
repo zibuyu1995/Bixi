@@ -9,16 +9,16 @@ class Channel:
         self.loop = loop
         self._queue = None
         self._subscribers = WeakSet()
-        ...
 
     @property
     def queue(self):
         maxsize = 1024
-        self._queue = self.FlowControlQueue(
-            maxsize=maxsize,
-            loop=self.loop,
-            clear_on_resume=True
-        )
+        if self._queue is None:
+            self._queue = self.FlowControlQueue(
+                maxsize=maxsize,
+                loop=self.loop,
+                clear_on_resume=False
+            )
         return self._queue
 
     def FlowControlQueue(
@@ -31,7 +31,7 @@ class Channel:
 
         return ThrowableQueue(
             maxsize=maxsize,
-            flow_control=FlowControlEvent(loop=self.loop),
+            flow_control=FlowControlEvent(initially_suspended=False, loop=self.loop),
             clear_on_resume=clear_on_resume,
             loop=loop or self.loop,
         )
@@ -46,15 +46,7 @@ class Channel:
     def subscriber_count(self) -> int:
         return len(self._subscribers)
 
+    @property
+    def size(self) -> int:
+        return self.queue.qsize()
 
-async def main(event_loop):
-    chanel = Channel(event_loop)
-    for i in range(10):
-        await chanel.put(i)
-    while True:
-        await chanel.get()
-
-
-if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main(loop))
