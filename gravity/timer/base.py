@@ -11,6 +11,7 @@ _futures = set()
 
 async def timers():
     while True:
+        print(1)
         await asyncio.sleep(1)
 
 
@@ -30,7 +31,7 @@ def on_future_done(fut):
 
 
 async def add_future():
-    fut = asyncio.ensure_future(_execute_task(timers()), loop=loop)
+    fut = await asyncio.ensure_future(_execute_task(timers()), loop=loop)
     fut.__wrapped__ = timers()
     fut.add_done_callback(on_future_done)
     _futures.add(fut)
