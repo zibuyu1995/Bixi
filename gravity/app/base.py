@@ -3,16 +3,13 @@ from functools import wraps, partial
 
 from mode import Service
 
+from gravity.transport import Channel
 from gravity.utils.cron import secs_for_next
+from .agent import Agent
 
 
 class App(Service):
-    __instance = None
-
-    def __new__(cls, *args, **kwargs):
-        if not cls.__instance:
-            cls.__instance = super(App, cls).__new__(cls, *args, **kwargs)
-        return cls.__instance
+    channel = None
 
     def __init__(self, node_id, *, loop=None):
         self.node_id = node_id
@@ -41,3 +38,16 @@ class App(Service):
                 await func(*args, **kwargs)
 
         return self.add_future(decorated())
+
+    async def send(self, send_value):
+        await self.channel.put(send_value)
+
+    def _channel(self):
+        return Channel(loop=self.loop)
+
+    def _agent(self):
+        return Agent(self.channel)
+
+    def on_init_dependencies(self):
+        self.channel = self._channel()
+        return [self._agent()]
