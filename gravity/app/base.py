@@ -3,13 +3,12 @@ from functools import wraps, partial
 
 from mode import Service
 
-from gravity.transport import Channel
 from gravity.utils.cron import secs_for_next
-from .agent import Agent
 
 
 class App(Service):
     channel = None
+    _timer_tasks = []
 
     def __init__(self, node_id, *, loop=None):
         self.node_id = node_id
@@ -25,29 +24,30 @@ class App(Service):
                 await asyncio.sleep(interval)
                 await func(*args, **kwargs)
 
-        return self.add_future(decorated())
+        return self._timer_tasks.append(decorated)
 
     def crontab(self, func=None, cron_format: str = None, timezone=None):
         if func is None:
-            return partial(self.crontab, cron_format, timezone=timezone)
+            return partial(self.crontab, cron_format=cron_format, timezone=timezone)
 
         @wraps(func)
         async def decorated(*args, **kwargs):
-            while True:
-                await asyncio.sleep(secs_for_next(cron_format, timezone))
+            while not self.should_stop:
+                next_time = secs_for_next(cron_format, timezone)
+                await asyncio.sleep(next_time)
                 await func(*args, **kwargs)
 
-        return self.add_future(decorated())
+        return self._timer_tasks.append(decorated)
 
     async def send(self, send_value):
-        await self.channel.put(send_value)
+        ...
 
     def _channel(self):
-        return Channel(loop=self.loop)
+        ...
 
-    def _agent(self):
-        return Agent(self.channel)
+    def _agent(self, id):
+        ...
 
-    def on_init_dependencies(self):
-        self.channel = self._channel()
-        return [self._agent()]
+    async def on_started(self):
+        for task in self._timer_tasks:
+            await self.add_future(task())

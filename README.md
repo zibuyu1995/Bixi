@@ -1,6 +1,17 @@
 # gravity
-> A Celery like task manager that distributes Asyncio coroutines
+> timer task
 
+### Quick Start
+* install
+```
+python setup.py install
+```
+* run
+```bash
+gravity --app example.timer.app run
+```
+
+### Why?
 ```
 O the way that gravity pulls
 On you and me
