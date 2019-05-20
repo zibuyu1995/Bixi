@@ -13,8 +13,8 @@ INSTALL_REQUIRES = [
 ]
 
 setup(
-    name='gravity',
-    version='1.0',
+    name='mtasks',
+    version='1.1',
     description='Asynchronous timing tasks',
     author='Mousse',
     author_email='zibuyu1995@gmail.com',
@@ -29,7 +29,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'gravity = gravity.cli:start',
+            'mtasks = mtasks.cli:start',
         ],
     },
 )

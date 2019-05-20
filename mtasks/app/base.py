@@ -5,7 +5,7 @@ from mode import Service
 from mode.timers import timer_intervals
 from mode.utils.objects import qualname
 
-from gravity.utils.cron import secs_for_next
+from mtasks.utils.cron import secs_for_next
 
 
 class App(Service):
@@ -34,6 +34,7 @@ class App(Service):
                 await self.sleep(sleep_time)
                 if self.should_stop:
                     break
+
         return self._timer_tasks.append(decorated)
 
     def crontab(self, func=None, cron_format: str = None, timezone=None):
@@ -55,10 +56,9 @@ class App(Service):
     def _channel(self):
         ...
 
-    def _agent(self, id):
+    def _agent(self):
         ...
 
     async def on_started(self):
         for task in self._timer_tasks:
             self.add_future(task())
-

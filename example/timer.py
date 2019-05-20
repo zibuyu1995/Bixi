@@ -2,7 +2,7 @@ import asyncio
 
 import uvloop
 
-from gravity.app import App
+from mtasks.app import App
 
 
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())

@@ -4,7 +4,7 @@ import click
 import uvloop
 from mode import Worker
 
-from gravity.utils.base import symbol_by_name, import_from_cwd
+from mtasks.utils.base import symbol_by_name, import_from_cwd
 
 
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
