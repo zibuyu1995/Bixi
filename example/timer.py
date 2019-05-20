@@ -1,5 +1,4 @@
 import asyncio
-from datetime import datetime
 
 import uvloop
 
@@ -15,5 +14,14 @@ app = App(node_id='test', loop=loop)
 
 @app.timer(interval=1)
 async def timer_test():
-    date_now = datetime.now()
-    print(date_now)
+    print('timer_test_1')
+
+
+@app.timer(interval=2)
+async def timer_test_2():
+    print('timer_test_2')
+
+
+@app.crontab(cron_format='18 * * * *')
+async def crontab_test():
+    print('crontab_test')

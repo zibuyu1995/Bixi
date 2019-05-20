@@ -2,6 +2,8 @@ import asyncio
 from functools import wraps, partial
 
 from mode import Service
+from mode.timers import timer_intervals
+from mode.utils.objects import qualname
 
 from gravity.utils.cron import secs_for_next
 
@@ -18,12 +20,20 @@ class App(Service):
         if func is None:
             return partial(self.timer, interval=interval)
 
+        timer_name = qualname(func)
+
         @wraps(func)
         async def decorated(*args, **kwargs):
-            while True:
-                await asyncio.sleep(interval)
+            await self.sleep(interval)
+            for sleep_time in timer_intervals(
+                    interval, name=timer_name,
+                    max_drift_correction=0.1):
+                if self.should_stop:
+                    break
                 await func(*args, **kwargs)
-
+                await self.sleep(sleep_time)
+                if self.should_stop:
+                    break
         return self._timer_tasks.append(decorated)
 
     def crontab(self, func=None, cron_format: str = None, timezone=None):
@@ -50,4 +60,5 @@ class App(Service):
 
     async def on_started(self):
         for task in self._timer_tasks:
-            await self.add_future(task())
+            self.add_future(task())
+
