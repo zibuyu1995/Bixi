@@ -21,7 +21,7 @@ setup(
     url='http://www.eds1995.com/',
     platforms=['any'],
     license='MIT',
-    install_requires=['aiohttp', 'click'],
+    install_requires=INSTALL_REQUIRES,
     python_requires='>=3.6.0',
     keywords=[
         'asyncio',
