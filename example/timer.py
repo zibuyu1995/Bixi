@@ -14,12 +14,7 @@ app = App(node_id='test', loop=loop)
 
 @app.timer(interval=1)
 async def timer_test():
-    print('timer_test_1')
-
-
-@app.timer(interval=2)
-async def timer_test_2():
-    print('timer_test_2')
+    print('timer_test')
 
 
 @app.crontab(cron_format='18 * * * *')

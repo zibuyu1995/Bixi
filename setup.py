@@ -14,7 +14,7 @@ INSTALL_REQUIRES = [
 
 setup(
     name='mtasks',
-    version='1.1',
+    version='1.1.1',
     description='Asynchronous timing tasks',
     author='Mousse',
     author_email='zibuyu1995@gmail.com',

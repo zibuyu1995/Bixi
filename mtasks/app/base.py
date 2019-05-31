@@ -10,10 +10,11 @@ from mtasks.utils.cron import secs_for_next
 
 class App(Service):
     channel = None
-    _timer_tasks = []
+    _tasks = None
 
     def __init__(self, node_id, *, loop=None):
         self.node_id = node_id
+        self._tasks = []
         super().__init__(loop=loop)
 
     def timer(self, func=None, interval=60):
@@ -34,8 +35,7 @@ class App(Service):
                 await self.sleep(sleep_time)
                 if self.should_stop:
                     break
-
-        return self._timer_tasks.append(decorated)
+        return self._tasks.append(decorated)
 
     def crontab(self, func=None, cron_format: str = None, timezone=None):
         if func is None:
@@ -48,7 +48,7 @@ class App(Service):
                 await asyncio.sleep(next_time)
                 await func(*args, **kwargs)
 
-        return self._timer_tasks.append(decorated)
+        return self._tasks.append(decorated)
 
     async def send(self, send_value):
         ...
@@ -60,5 +60,5 @@ class App(Service):
         ...
 
     async def on_started(self):
-        for task in self._timer_tasks:
+        for task in self._tasks:
             self.add_future(task())
