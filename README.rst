@@ -1,33 +1,41 @@
-===========================
- Asynchronous timer task
-===========================
+===================================
+  Python Asynchronous Task Queue
+===================================
+*Bixi: By its nature it likes to carry heavy weights*
 
-
-:Version: 1.1.1
-:Web: https://github.com/zibuyu1995/mtasks
-:Download: https://pypi.org/project/mtasks/
-:Source: https://github.com/zibuyu1995/mtasks
-:Keywords: async, timer_task
-:email: zibuyu1995@gmail.com
++----------------+------------------------------------------------+
+|Project site    | https://github.com/zibuyu1995/Bixi             |
++----------------+------------------------------------------------+
+|Issues          | https://github.com/zibuyu1995/Bixi/issues/     |
++----------------+------------------------------------------------+
+|Documentation   | todo.....                                      |
++----------------+------------------------------------------------+
+|Author          | Mousse(zibuyu1995@gmail.com)                   |
++----------------+------------------------------------------------+
+|Latest Version  | 1.0                                            |
++----------------+------------------------------------------------+
+|Python versions | 3.6 or above                                   |
++----------------+------------------------------------------------+
+|Keywords        | async, task queue                              |
++----------------+------------------------------------------------+
 
 
 Installation
 ============
 
-You can install Faust either via the Python Package Index (PyPI)
-or from source.
+You can install Bixi either via the Python Package Index (PyPI) or from source.
 
 To install using `pip`:
 
 .. sourcecode:: console
 
-    $ pip install -U mtasks
+    $ pip install -U bixi
 
 Run example
 ============
 .. sourcecode:: console
 
-    $ mtasks --app example.timer.app run
+    $ bixi --app example.timer.app run
 
 
 FAQ

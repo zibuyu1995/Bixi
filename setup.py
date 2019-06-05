@@ -13,23 +13,25 @@ INSTALL_REQUIRES = [
 ]
 
 setup(
-    name='mtasks',
-    version='1.1.1',
-    description='Asynchronous timing tasks',
+    name='bixi',
+    version='1.0',
     author='Mousse',
     author_email='zibuyu1995@gmail.com',
-    url='http://www.eds1995.com/',
+    url='https://github.com/zibuyu1995/Bixi',
+    description='Asynchronous Task Queue',
+    long_description=open("README.rst").read(),
     platforms=['any'],
     license='MIT',
     install_requires=INSTALL_REQUIRES,
     python_requires='>=3.6.0',
     keywords=[
-        'asyncio',
-        'timer task'
+        'asynchronous',
+        'task',
+        'queue'
     ],
     entry_points={
         'console_scripts': [
-            'mtasks = mtasks.cli:start',
+            'bixi = bixi.cli:start',
         ],
     },
 )

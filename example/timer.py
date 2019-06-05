@@ -1,15 +1,7 @@
-import asyncio
-
-import uvloop
-
-from mtasks.app import App
+from bixi.app import App
 
 
-asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
-loop = asyncio.get_event_loop()
-
-
-app = App(node_id='test', loop=loop)
+app = App(node_id='timer')
 
 
 @app.timer(interval=1)
